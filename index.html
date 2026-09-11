@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام مخمد السيولة اللزجة - Fluid Viscous Damper</title>
+    <style>
+        :root {
+            --primary-color: #1a3c6e;
+            --secondary-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        nav {
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* تنسيقات المجسمات ثلاثية الأبعاد */
+        .canvas-container {
+            width: 100%;
+            height: 450px;
+            background-color: #eef2f5;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #ddd;
+            margin-top: 20px;
+        }
+
+        .canvas-container canvas {
+            display: block;
+        }
+
+        .controls-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        /* تنسيقات الجداول */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .flex-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .flex-item {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>مخمد السيولة اللزجة (Fluid Viscous Damper)</h1>
+        <p>تصميم مبتكر ومصغر لمقاومة الزلازل في النماذج الخشبية</p>
+    </header>
+
+    <nav>
+        <a href="#overview">نظرة عامة</a>
+        <a href="#damper-3d">مجسم الجهاز 3D</a>
+        <a href="#building-3d">المبنى والمخمدات 3D</a>
+        <a href="#working">طريقة العمل</a>
+        <a href="#specs">المواصفات</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- القسم 1: نظرة عامة -->
+        <section id="overview">
+            <h2>1. نظرة عامة على المشروع</h2>
+            <p>
+                هذا المشروع عبارة عن جهاز مخمد لزوجي مخصص، تم تصميمه هندسياً خصيصاً للنماذج الهيكلية الخشبية الصغيرة. يهدف الجهاز إلى تقليل الاهتزازات والتشوهات الناتجة عن الزلازل من خلال تبديد الطاقة الحركية وتحويلها إلى طاقة حرارية.
+            </p>
+            <div class="flex-grid">
+                <div class="flex-item">
+                    <h3>المواصفات الرئيسية:</h3>
+                    <ul>
+                        <li><strong>الطول الكلي:</strong> 3.2 بوصة (81 مم)</li>
+                        <li><strong>القطر:</strong> 0.5 بوصة (12.7 مم)</li>
+                        <li><strong>الوزن المستهدف:</strong> 10 - 15 جرام</li>
+                        <li><strong>الشوط الكلي:</strong> 0.5 بوصة (± 0.25 بوصة)</li>
+                        <li><strong>السائل:</strong> زيت السيليكون عالي اللزوجة (1000 - 5000 CST)</li>
+                    </ul>
+                </div>
+                <div class="flex-item">
+                    <h3>المكونات الأساسية:</h3>
+                    <ul>
+                        <li><strong>الأسطوانة:</strong> أنبوب PETG / PVC</li>
+                        <li><strong>المكبس:</strong> بولي إيثيلين عالي الكثافة (HDPE)</li>
+                        <li><strong>القضيب:</strong> ألومنيوم 6061-T6</li>
+                        <li><strong>المفاصل:</strong> نايلون (PA6) مطبوع ثلاثي الأبعاد</li>
+                        <li><strong>الحشوات:</strong> حلقات مطاطية NBR (O-rings)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- القسم 2: مجسم الجهاز 3D -->
+        <section id="damper-3d">
+            <h2>2. مجسم ثلاثي الأبعاد للمخمد (3D Damper Model)</h2>
+            <p>يمكنك تحريك المجسم باستخدام الفأرة (السحب للدوران، عجلة التمرير للتقريب). يوضح المجسم المكونات الداخلية للمخمد.</p>
+            <div class="canvas-container" id="damperCanvasContainer">
+                <div class="controls-hint">اسحب للدوران | عجلة الفأرة للتقريب</div>
+            </div>
+        </section>
+
+        <!-- القسم 3: المبنى 3D -->
+        <section id="building-3d">
+            <h2>3. المبنى الهيكلي وتوزيع المخمدات (3D Building Model)</h2>
+            <p>يوضح المجسم التالي الهيكل الخشبي للمبنى، مع إبراز أماكن تركيب المخمدات (باللون الأحمر) في الطوابق السفلية والوسطى لتقليل قوى القص وتشتيت الطاقة.</p>
+            <div class="canvas-container" id="buildingCanvasContainer">
+                <div class="controls-hint">اسحب للدوران | عجلة الفأرة للتقريب</div>
+            </div>
+        </section>
+
+        <!-- القسم 4: طريقة العمل -->
+        <section id="working">
+            <h2>4. مبدأ العمل وطريقة التبديد</h2>
+            <p>يعمل المخمد وفقاً لمبدأ المقاومة اللزوجية الخطية: <strong>F = C × V<sup>α</sup></strong> (حيث α = 1.0).</p>
+            <ul>
+                <li><strong>مرحلة الانضغاط:</strong> عند حدوث إزاحة نسبية بين الطوابق، يتم دفع قضيب الألومنيوم للداخل، مما يجبر زيت السيليكون على المرور عبر فتحات دقيقة (4 فتحات بقطر 0.8 مم) في رأس المكبس.</li>
+                <li><strong>مرحلة التمدد:</strong> عند ارتداد الهيكل، يتم سحب القضيب للخارج، ويعود السائل للتدفق عبر نفس الفتحات.</li>
+                <li><strong>تبديد الطاقة:</strong> يخلق الضغط التفاضلي عبر المكبس مقاومة قص في السائل اللزج، مما يحول الطاقة الحركية للهيكل إلى طاقة حرارية يتم تبديدها بأمان في البيئة.</li>
+            </ul>
+        </section>
+
+        <!-- القسم 5: المواصفات والتحليل -->
+        <section id="specs">
+            <h2>5. التحليل الهيكلي المقارن وتحليل التكلفة</h2>
+            
+            <h3>مقارنة الأداء قبل وبعد استخدام المخمد:</h3>
+            <table>
+                <tr>
+                    <th>وجه المقارنة</th>
+                    <th>قبل استخدام المخمد</th>
+                    <th>بعد استخدام المخمد</th>
+                </tr>
+                <tr>
+                    <td>الإزاحة (بوصة)</td>
+                    <td>0.14</td>
+                    <td>0.086</td>
+                </tr>
+                <tr>
+                    <td>التسارع (بوصة/ث²)</td>
+                    <td>240</td>
+                    <td>190.14</td>
+                </tr>
+            </table>
+
+            <h3>تحليل التكلفة التقريبية:</h3>
+            <table>
+                <tr>
+                    <th>المكون</th>
+                    <th>الكمية</th>
+                    <th>السعر التقريبي (ج.م)</th>
+                </tr>
+                <tr><td>أنبوب PETG</td><td>1 قطعة</td><td>10 - 12</td></tr>
+                <tr><td>مكبس HDPE</td><td>1 قطعة</td><td>5 - 7</td></tr>
+                <tr><td>قضيب ألومنيوم</td><td>1 قطعة</td><td>6 - 8</td></tr>
+                <tr><td>مفاصل مطبوعة 3D (نايلون)</td><td>1 قطعة</td><td>5 - 7</td></tr>
+                <tr><td>حلقات O-ring</td><td>2 - 3 قطع</td><td>5 - 6</td></tr>
+                <tr><td>مسامير ستانلس ستيل</td><td>4 - 6 مسامير</td><td>4 - 5</td></tr>
+                <tr><td>زيت سيليكون</td><td>كمية صغيرة</td><td>3 - 4</td></tr>
+            </table>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>تم تطوير هذا الموقع لعرض مشروع مخمد السيولة اللزجة - جميع الحقوق محفوظة &copy; 2023</p>
+    </footer>
+
+    <!-- استدعاء مكتبة Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        // ==========================================
+        // 1. إعداد مجسم المخمد (Damper 3D Model)
+        // ==========================================
+        function initDamperModel() {
+            const container = document.getElementById('damperCanvasContainer');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            // المشهد
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xeef2f5);
+
+            // الكاميرا
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 5, 15);
+            camera.lookAt(0, 0, 0);
+
+            // المحرك (Renderer)
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(width, height);
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            // الإضاءة
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(5, 10, 7);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+
+            const backLight = new THREE.DirectionalLight(0xffffff, 0.4);
+            backLight.position.set(-5, -5, -5);
+            scene.add(backLight);
+
+            // --- بناء المخمد ---
+            const damperGroup = new THREE.Group();
+
+            // 1. الأسطوانة الخارجية (شفافة)
+            const cylinderGeo = new THREE.CylinderGeometry(1.2, 1.2, 6, 32);
+            const cylinderMat = new THREE.MeshPhysicalMaterial({
+                color: 0x88ccff,
+                transparent: true,
+                opacity: 0.3,
+                roughness: 0.1,
+                metalness: 0.1,
+                clearcoat: 1.0
+            });
+            const cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
+            cylinder.rotation.z = Math.PI / 2;
+            damperGroup.add(cylinder);
+
+            // 2. السائل الداخلي (زيت السيليكون)
+            const fluidGeo = new THREE.CylinderGeometry(1.0, 1.0, 5.8, 32);
+            const fluidMat = new THREE.MeshPhysicalMaterial({
+                color: 0xcc0000,
+                transparent: true,
+                opacity: 0.6,
+                roughness: 0.2,
+                metalness: 0.0
+            });
+            const fluid = new THREE.Mesh(fluidGeo, fluidMat);
+            fluid.rotation.z = Math.PI / 2;
+            damperGroup.add(fluid);
+
+            // 3. المكبس (HDPE)
+            const pistonGeo = new THREE.CylinderGeometry(0.95, 0.95, 0.8, 32);
+            const pistonMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.7 });
+            const piston = new THREE.Mesh(pistonGeo, pistonMat);
+            piston.rotation.z = Math.PI / 2;
+            piston.position.x = 0; // في المنتصف
+            damperGroup.add(piston);
+
+            // 4. القضيب (Aluminum Rod)
+            const rodGeo = new THREE.CylinderGeometry(0.25, 0.25, 8, 16);
+            const rodMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.9, roughness: 0.2 });
+            const rod = new THREE.Mesh(rodGeo, rodMat);
+            rod.rotation.z = Math.PI / 2;
+            rod.position.x = 2; // يمتد للخارج
+            damperGroup.add(rod);
+
+            // 5. المفاصل (Clevises)
+            const clevisGeo = new THREE.BoxGeometry(0.8, 1.5, 1.5);
+            const clevisMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
+            
+            const clevisLeft = new THREE.Mesh(clevisGeo, clevisMat);
+            clevisLeft.position.set(-3.5, 0, 0);
+            damperGroup.add(clevisLeft);
+
+            const clevisRight = new THREE.Mesh(clevisGeo, clevisMat);
+            clevisRight.position.set(3.5, 0, 0);
+            damperGroup.add(clevisRight);
+
+            // إضافة المجموعة للمشهد
+            scene.add(damperGroup);
+
+            // --- تحريك المشهد ---
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+
+            renderer.domElement.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.offsetX, y: e.offsetY };
+            });
+
+            renderer.domElement.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const deltaX = e.offsetX - previousMousePosition.x;
+                    const deltaY = e.offsetY - previousMousePosition.y;
+                    
+                    damperGroup.rotation.y += deltaX * 0.01;
+                    damperGroup.rotation.x += deltaY * 0.01;
+                    
+                    previousMousePosition = { x: e.offsetX, y: e.offsetY };
+                }
+            });
+
+            renderer.domElement.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            renderer.domElement.addEventListener('wheel', (e) => {
+                camera.position.z += e.deltaY * 0.01;
+                if(camera.position.z < 5) camera.position.z = 5;
+                if(camera.position.z > 30) camera.position.z = 30;
+            });
+
+            // حلقة الرسم
+            function animate() {
+                requestAnimationFrame(animate);
+                if(!isDragging) {
+                    damperGroup.rotation.y += 0.005; // دوران تلقائي بطيء
+                }
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // التعامل مع تغيير حجم النافذة
+            window.addEventListener('resize', () => {
+                const newWidth = container.clientWidth;
+                const newHeight = container.clientHeight;
+                renderer.setSize(newWidth, newHeight);
+                camera.aspect = newWidth / newHeight;
+                camera.updateProjectionMatrix();
+            });
+        }
+
+        // ==========================================
+        // 2. إعداد مجسم المبنى (Building 3D Model)
+        // ==========================================
+        function initBuildingModel() {
+            const container = document.getElementById('buildingCanvasContainer');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xeef2f5);
+
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(15, 15, 25);
+            camera.lookAt(0, 5, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            // الإضاءة
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(10, 20, 10);
+            scene.add(dirLight);
+
+            // --- بناء المبنى ---
+            const buildingGroup = new THREE.Group();
+
+            // إعدادات المبنى
+            const floors = 5;
+            const floorHeight = 2;
+            const widthX = 4;
+            const depthZ = 4;
+
+            // مواد البناء
+            const beamMat = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.8 }); // خشب
+            const damperMat = new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0x550000 }); // أحمر للمخمدات
+
+            // دالة لإنشاء عمود
+            function createColumn(x, z, y) {
+                const geo = new THREE.CylinderGeometry(0.2, 0.2, floorHeight, 8);
+                const mesh = new THREE.Mesh(geo, beamMat);
+                mesh.position.set(x, y + floorHeight/2, z);
+                return mesh;
+            }
+
+            // دالة لإنشاء عارضة
+            function createBeam(x1, z1, x2, z2, y) {
+                const length = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2-z1, 2));
+                const geo = new THREE.BoxGeometry(length, 0.2, 0.2);
+                const mesh = new THREE.Mesh(geo, beamMat);
+                
+                // تحديد الموضع والزاوية
+                const midX = (x1 + x2) / 2;
+                const midZ = (z1 + z2) / 2;
+                mesh.position.set(midX, y, midZ);
+                
+                // تدوير العارضة
+                const angle = Math.atan2(z2 - z1, x2 - x1);
+                mesh.rotation.y = -angle;
+                
+                return mesh;
+            }
+
+            // دالة لإنشاء مخمد (قطري)
+            function createDamper(x1, z1, y1, x2, z2, y2) {
+                const length = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2-z1, 2) + Math.pow(y2-y1, 2));
+                const geo = new THREE.CylinderGeometry(0.15, 0.15, length, 8);
+                const mesh = new THREE.Mesh(geo, damperMat);
+                
+                const midX = (x1 + x2) / 2;
+                const midY = (y1 + y2) / 2;
+                const midZ = (z1 + z2) / 2;
+                mesh.position.set(midX, midY, midZ);
+                
+                // توجيه المخمد (نستخدم Quaternion لتدوير الأسطوانة لتتوافق مع الاتجاه)
+                const start = new THREE.Vector3(x1, y1, z1);
+                const end = new THREE.Vector3(x2, y2, z2);
+                const direction = new THREE.Vector3().subVectors(end, start).normalize();
+                
+                // الأسطوانة الافتراضية موجهة على المحور Y، لذا نحتاج لتدويرها
+                const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
+                mesh.quaternion.copy(quaternion);
+                
+                return mesh;
+            }
+
+            // بناء الطوابق
+            for (let i = 0; i < floors; i++) {
+                const y = i * floorHeight;
+                
+                // الأعمدة (4 أركان)
+                buildingGroup.add(createColumn(-widthX/2, -depthZ/2, y));
+                buildingGroup.add(createColumn(widthX/2, -depthZ/2, y));
+                buildingGroup.add(createColumn(-widthX/2, depthZ/2, y));
+                buildingGroup.add(createColumn(widthX/2, depthZ/2, y));
+
+                // العوارض الأفقية (محيط الطابق)
+                const yTop = y + floorHeight;
+                buildingGroup.add(createBeam(-widthX/2, -depthZ/2, widthX/2, -depthZ/2, yTop));
+                buildingGroup.add(createBeam(widthX/2, -depthZ/2, widthX/2, depthZ/2, yTop));
+                buildingGroup.add(createBeam(widthX/2, depthZ/2, -widthX/2, depthZ/2, yTop));
+                buildingGroup.add(createBeam(-widthX/2, depthZ/2, -widthX/2, -depthZ/2, yTop));
+
+                // إضافة المخمدات (في الطوابق السفلية والوسطى - الطوابق 0, 1, 2)
+                if (i < 3) {
+                    // مخمدات على الواجهة الأمامية (Z = -depthZ/2)
+                    buildingGroup.add(createDamper(-widthX/2, -depthZ/2, y, widthX/2, -depthZ/2, yTop));
+                    // مخمدات على الواجهة الخلفية (Z = depthZ/2)
+                    buildingGroup.add(createDamper(-widthX/2, depthZ/2, y, widthX/2, depthZ/2, yTop));
+                    // مخمدات على الجانب الأيسر (X = -widthX/2)
+                    buildingGroup.add(createDamper(-widthX/2, -depthZ/2, y, -widthX/2, depthZ/2, yTop));
+                    // مخمدات على الجانب الأيمن (X = widthX/2)
+                    buildingGroup.add(createDamper(widthX/2, -depthZ/2, y, widthX/2, depthZ/2, yTop));
+                }
+            }
+
+            scene.add(buildingGroup);
+
+            // --- تحريك المشهد ---
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+
+            renderer.domElement.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.offsetX, y: e.offsetY };
+            });
+
+            renderer.domElement.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const deltaX = e.offsetX - previousMousePosition.x;
+                    const deltaY = e.offsetY - previousMousePosition.y;
+                    
+                    buildingGroup.rotation.y += deltaX * 0.01;
+                    // تقييد دوران المحور X
+                    buildingGroup.rotation.x += deltaY * 0.01;
+                    if(buildingGroup.rotation.x > 0.5) buildingGroup.rotation.x = 0.5;
+                    if(buildingGroup.rotation.x < -0.5) buildingGroup.rotation.x = -0.5;
+                    
+                    previousMousePosition = { x: e.offsetX, y: e.offsetY };
+                }
+            });
+
+            renderer.domElement.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            renderer.domElement.addEventListener('wheel', (e) => {
+                camera.position.y += e.deltaY * 0.02;
+                camera.position.z += e.deltaY * 0.02;
+                if(camera.position.z < 10) camera.position.z = 10;
+                if(camera.position.z > 50) camera.position.z = 50;
+                camera.lookAt(0, 5, 0);
+            });
+
+            // حلقة الرسم
+            function animate() {
+                requestAnimationFrame(animate);
+                if(!isDragging) {
+                    buildingGroup.rotation.y += 0.002; // دوران تلقائي بطيء
+                }
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // التعامل مع تغيير حجم النافذة
+            window.addEventListener('resize', () => {
+                const newWidth = container.clientWidth;
+                const newHeight = container.clientHeight;
+                renderer.setSize(newWidth, newHeight);
+                camera.aspect = newWidth / newHeight;
+                camera.updateProjectionMatrix();
+            });
+        }
+
+        // تشغيل الدوال بعد تحميل الصفحة
+        window.onload = function() {
+            initDamperModel();
+            initBuildingModel();
+        };
+    </script>
+</body>
+</html>
