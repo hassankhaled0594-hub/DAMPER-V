@@ -3,97 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام مخمد السيولة اللزجة - Fluid Viscous Damper</title>
+    <title>Viscous Damper | نظام التخميد المستقبلي المعقد</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary-color: #1a3c6e;
-            --secondary-color: #e74c3c;
-            --bg-color: #f4f7f6;
-            --text-color: #333;
+            --bg-dark: #03060f;
+            --bg-panel: rgba(10, 18, 35, 0.75);
+            --neon-blue: #00f3ff;
+            --neon-red: #ff003c;
+            --neon-green: #00ff88;
+            --text-main: #e0e6ed;
+            --text-muted: #8a9bb8;
+            --glass-border: rgba(0, 243, 255, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.1), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 60, 0.1), transparent 30%);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* تأثير الشبكة المستقبلية */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
         }
 
         header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px 0;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 60px 20px 40px;
+            position: relative;
         }
 
         header h1 {
-            margin: 0;
-            font-size: 2.2em;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue);
+            margin-bottom: 10px;
+            animation: glow 3s infinite alternate;
         }
 
         header p {
-            margin: 5px 0 0;
-            font-size: 1.1em;
-            opacity: 0.8;
+            font-size: 1.2rem;
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+            to { text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue), 0 0 60px var(--neon-blue); }
         }
 
         nav {
-            background-color: #2c3e50;
             display: flex;
             justify-content: center;
-            padding: 10px 0;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(3, 6, 15, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         nav a {
-            color: white;
+            color: var(--text-main);
             text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
             padding: 10px 20px;
-            margin: 0 10px;
+            border: 1px solid transparent;
             border-radius: 5px;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
         }
 
         nav a:hover {
-            background-color: var(--secondary-color);
+            color: var(--neon-blue);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            background: rgba(0, 243, 255, 0.1);
         }
 
         .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
         section {
-            background: white;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background: var(--bg-panel);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        section:hover {
+            border-color: rgba(0, 243, 255, 0.6);
+            box-shadow: 0 8px 40px rgba(0, 243, 255, 0.15);
+        }
+
+        section::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
         }
 
         h2 {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--secondary-color);
-            padding-bottom: 10px;
-            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::before {
+            content: ">";
+            color: var(--neon-red);
+            font-weight: bold;
+            font-size: 2rem;
+        }
+
+        h3 {
+            color: var(--neon-blue);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-family: 'Orbitron', sans-serif;
         }
 
         /* تنسيقات المجسمات ثلاثية الأبعاد */
         .canvas-container {
             width: 100%;
-            height: 450px;
-            background-color: #eef2f5;
-            border-radius: 8px;
+            height: 550px;
+            background: #000;
+            border-radius: 10px;
             overflow: hidden;
             position: relative;
-            border: 2px solid #ddd;
-            margin-top: 20px;
+            border: 1px solid rgba(0, 243, 255, 0.4);
+            box-shadow: inset 0 0 60px rgba(0, 243, 255, 0.15), 0 0 30px rgba(0, 243, 255, 0.2);
+            margin-top: 25px;
         }
 
         .canvas-container canvas {
@@ -102,153 +184,157 @@
 
         .controls-hint {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            padding: 5px 10px;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--neon-green);
+            padding: 8px 15px;
             border-radius: 5px;
-            font-size: 0.8em;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            pointer-events: none;
+            letter-spacing: 1px;
         }
 
-        /* تنسيقات الجداول */
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 25px;
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
+            padding: 15px 20px;
             text-align: right;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         th {
-            background-color: var(--primary-color);
-            color: white;
+            background: rgba(0, 243, 255, 0.15);
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--neon-blue);
         }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        tr { transition: background 0.3s ease; }
+        tr:hover { background: rgba(0, 243, 255, 0.08); }
+        td { color: var(--text-main); }
+
+        ul { list-style: none; padding-right: 0; }
+        ul li { margin-bottom: 12px; padding-right: 25px; position: relative; }
+        ul li::before {
+            content: "■";
+            position: absolute;
+            right: 0;
+            color: var(--neon-red);
+            font-size: 0.8rem;
+            top: 4px;
         }
 
-        .flex-grid {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
+        .flex-grid { display: flex; gap: 30px; flex-wrap: wrap; }
         .flex-item {
             flex: 1;
             min-width: 300px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
+        .highlight { color: var(--neon-green); font-weight: bold; }
 
         footer {
             text-align: center;
-            padding: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            margin-top: 40px;
-        }
-
-        .btn {
-            display: inline-block;
-            background: var(--secondary-color);
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: background 0.3s;
-        }
-
-        .btn:hover {
-            background: #c0392b;
+            padding: 30px;
+            background: rgba(3, 6, 15, 0.95);
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>مخمد السيولة اللزجة (Fluid Viscous Damper)</h1>
-        <p>تصميم مبتكر ومصغر لمقاومة الزلازل في النماذج الخشبية</p>
+        <h1>Viscous Damper</h1>
+        <p>نظام التخميد اللزوجي المستقبلي المعقد</p>
     </header>
 
     <nav>
         <a href="#overview">نظرة عامة</a>
         <a href="#damper-3d">مجسم الجهاز 3D</a>
-        <a href="#building-3d">المبنى والمخمدات 3D</a>
+        <a href="#building-3d">المبنى 3D</a>
         <a href="#working">طريقة العمل</a>
         <a href="#specs">المواصفات</a>
     </nav>
 
     <div class="container">
 
-        <!-- القسم 1: نظرة عامة -->
         <section id="overview">
-            <h2>1. نظرة عامة على المشروع</h2>
-            <p>
-                هذا المشروع عبارة عن جهاز مخمد لزوجي مخصص، تم تصميمه هندسياً خصيصاً للنماذج الهيكلية الخشبية الصغيرة. يهدف الجهاز إلى تقليل الاهتزازات والتشوهات الناتجة عن الزلازل من خلال تبديد الطاقة الحركية وتحويلها إلى طاقة حرارية.
+            <h2>نظرة عامة على المشروع</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">
+                جهاز مخمد لزوجي مخصص، تم تصميمه هندسياً خصيصاً للنماذج الهيكلية الخشبية الصغيرة. يهدف الجهاز إلى تقليل الاهتزازات والتشوهات الناتجة عن الزلازل من خلال تبديد الطاقة الحركية وتحويلها إلى طاقة حرارية.
             </p>
             <div class="flex-grid">
                 <div class="flex-item">
-                    <h3>المواصفات الرئيسية:</h3>
+                    <h3>المواصفات الرئيسية</h3>
                     <ul>
-                        <li><strong>الطول الكلي:</strong> 3.2 بوصة (81 مم)</li>
-                        <li><strong>القطر:</strong> 0.5 بوصة (12.7 مم)</li>
-                        <li><strong>الوزن المستهدف:</strong> 10 - 15 جرام</li>
-                        <li><strong>الشوط الكلي:</strong> 0.5 بوصة (± 0.25 بوصة)</li>
-                        <li><strong>السائل:</strong> زيت السيليكون عالي اللزوجة (1000 - 5000 CST)</li>
+                        <li><span class="highlight">الطول الكلي:</span> 3.2 بوصة (81 مم)</li>
+                        <li><span class="highlight">القطر:</span> 0.5 بوصة (12.7 مم)</li>
+                        <li><span class="highlight">الوزن المستهدف:</span> 10 - 15 جرام</li>
+                        <li><span class="highlight">الشوط الكلي:</span> 0.5 بوصة (± 0.25 بوصة)</li>
+                        <li><span class="highlight">السائل:</span> زيت السيليكون عالي اللزوجة (1000 - 5000 CST)</li>
                     </ul>
                 </div>
                 <div class="flex-item">
-                    <h3>المكونات الأساسية:</h3>
+                    <h3>المكونات الأساسية</h3>
                     <ul>
-                        <li><strong>الأسطوانة:</strong> أنبوب PETG / PVC</li>
-                        <li><strong>المكبس:</strong> بولي إيثيلين عالي الكثافة (HDPE)</li>
-                        <li><strong>القضيب:</strong> ألومنيوم 6061-T6</li>
-                        <li><strong>المفاصل:</strong> نايلون (PA6) مطبوع ثلاثي الأبعاد</li>
-                        <li><strong>الحشوات:</strong> حلقات مطاطية NBR (O-rings)</li>
+                        <li><span class="highlight">الأسطوانة:</span> أنبوب PETG / PVC</li>
+                        <li><span class="highlight">المكبس:</span> بولي إيثيلين عالي الكثافة (HDPE)</li>
+                        <li><span class="highlight">القضيب:</span> ألومنيوم 6061-T6</li>
+                        <li><span class="highlight">المفاصل:</span> نايلون (PA6) مطبوع ثلاثي الأبعاد</li>
+                        <li><span class="highlight">الحشوات:</span> حلقات مطاطية NBR (O-rings)</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- القسم 2: مجسم الجهاز 3D -->
         <section id="damper-3d">
-            <h2>2. مجسم ثلاثي الأبعاد للمخمد (3D Damper Model)</h2>
-            <p>يمكنك تحريك المجسم باستخدام الفأرة (السحب للدوران، عجلة التمرير للتقريب). يوضح المجسم المكونات الداخلية للمخمد.</p>
+            <h2>مجسم ثلاثي الأبعاد للمخمد (تفصيلي)</h2>
+            <p style="color: var(--text-muted);">تمت إضافة تفاصيل دقيقة مثل الحلقات المطاطية، فتحات المكبس، والمسامير لزيادة الواقعية.</p>
             <div class="canvas-container" id="damperCanvasContainer">
-                <div class="controls-hint">اسحب للدوران | عجلة الفأرة للتقريب</div>
+                <div class="controls-hint">DRAG TO ROTATE | SCROLL TO ZOOM</div>
             </div>
         </section>
 
-        <!-- القسم 3: المبنى 3D -->
         <section id="building-3d">
-            <h2>3. المبنى الهيكلي وتوزيع المخمدات (3D Building Model)</h2>
-            <p>يوضح المجسم التالي الهيكل الخشبي للمبنى، مع إبراز أماكن تركيب المخمدات (باللون الأحمر) في الطوابق السفلية والوسطى لتقليل قوى القص وتشتيت الطاقة.</p>
+            <h2>المبنى الهيكلي المعقد وتوزيع المخمدات</h2>
+            <p style="color: var(--text-muted);">هيكل إنشائي متكامل مع دعامات قطرية (Cross-bracing) وبلاطات أرضيات، مع إبراز المخمدات المضيئة.</p>
             <div class="canvas-container" id="buildingCanvasContainer">
-                <div class="controls-hint">اسحب للدوران | عجلة الفأرة للتقريب</div>
+                <div class="controls-hint">DRAG TO ROTATE | SCROLL TO ZOOM</div>
             </div>
         </section>
 
-        <!-- القسم 4: طريقة العمل -->
         <section id="working">
-            <h2>4. مبدأ العمل وطريقة التبديد</h2>
-            <p>يعمل المخمد وفقاً لمبدأ المقاومة اللزوجية الخطية: <strong>F = C × V<sup>α</sup></strong> (حيث α = 1.0).</p>
-            <ul>
-                <li><strong>مرحلة الانضغاط:</strong> عند حدوث إزاحة نسبية بين الطوابق، يتم دفع قضيب الألومنيوم للداخل، مما يجبر زيت السيليكون على المرور عبر فتحات دقيقة (4 فتحات بقطر 0.8 مم) في رأس المكبس.</li>
+            <h2>مبدأ العمل وطريقة التبديد</h2>
+            <p>يعمل المخمد وفقاً لمبدأ المقاومة اللزوجية الخطية: <strong style="color: var(--neon-red);">F = C × V<sup>α</sup></strong> (حيث α = 1.0).</p>
+            <ul style="margin-top: 20px;">
+                <li><strong>مرحلة الانضغاط:</strong> عند حدوث إزاحة نسبية، يتم دفع القضيب للداخل، مما يجبر زيت السيليكون على المرور عبر فتحات دقيقة (4 فتحات بقطر 0.8 مم) في رأس المكبس.</li>
                 <li><strong>مرحلة التمدد:</strong> عند ارتداد الهيكل، يتم سحب القضيب للخارج، ويعود السائل للتدفق عبر نفس الفتحات.</li>
-                <li><strong>تبديد الطاقة:</strong> يخلق الضغط التفاضلي عبر المكبس مقاومة قص في السائل اللزج، مما يحول الطاقة الحركية للهيكل إلى طاقة حرارية يتم تبديدها بأمان في البيئة.</li>
+                <li><strong>تبديد الطاقة:</strong> يخلق الضغط التفاضلي مقاومة قص في السائل اللزج، مما يحول الطاقة الحركية إلى طاقة حرارية يتم تبديدها بأمان.</li>
             </ul>
         </section>
 
-        <!-- القسم 5: المواصفات والتحليل -->
         <section id="specs">
-            <h2>5. التحليل الهيكلي المقارن وتحليل التكلفة</h2>
+            <h2>التحليل الهيكلي وتحليل التكلفة</h2>
             
-            <h3>مقارنة الأداء قبل وبعد استخدام المخمد:</h3>
+            <h3>مقارنة الأداء قبل وبعد استخدام المخمد</h3>
             <table>
                 <tr>
                     <th>وجه المقارنة</th>
@@ -258,16 +344,16 @@
                 <tr>
                     <td>الإزاحة (بوصة)</td>
                     <td>0.14</td>
-                    <td>0.086</td>
+                    <td style="color: var(--neon-green);">0.086</td>
                 </tr>
                 <tr>
                     <td>التسارع (بوصة/ث²)</td>
                     <td>240</td>
-                    <td>190.14</td>
+                    <td style="color: var(--neon-green);">190.14</td>
                 </tr>
             </table>
 
-            <h3>تحليل التكلفة التقريبية:</h3>
+            <h3 style="margin-top: 40px;">تحليل التكلفة التقريبية</h3>
             <table>
                 <tr>
                     <th>المكون</th>
@@ -287,7 +373,7 @@
     </div>
 
     <footer>
-        <p>تم تطوير هذا الموقع لعرض مشروع مخمد السيولة اللزجة - جميع الحقوق محفوظة &copy; 2023</p>
+        <p>SYSTEM INITIALIZED &copy; 2024 | COMPLEX VISCOUS DAMPER PROJECT</p>
     </footer>
 
     <!-- استدعاء مكتبة Three.js -->
@@ -295,100 +381,162 @@
     
     <script>
         // ==========================================
-        // 1. إعداد مجسم المخمد (Damper 3D Model)
+        // 1. إعداد مجسم المخمد المعقد (Complex Damper 3D Model)
         // ==========================================
         function initDamperModel() {
             const container = document.getElementById('damperCanvasContainer');
             const width = container.clientWidth;
             const height = container.clientHeight;
 
-            // المشهد
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xeef2f5);
+            scene.background = new THREE.Color(0x03060f); 
 
-            // الكاميرا
             const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            camera.position.set(0, 5, 15);
+            camera.position.set(0, 8, 18);
             camera.lookAt(0, 0, 0);
 
-            // المحرك (Renderer)
             const renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(width, height);
             renderer.shadowMap.enabled = true;
             container.appendChild(renderer.domElement);
 
-            // الإضاءة
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            // إضاءة مستقبلية
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
             scene.add(ambientLight);
 
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            dirLight.position.set(5, 10, 7);
+            const dirLight = new THREE.DirectionalLight(0x00f3ff, 2.0); 
+            dirLight.position.set(10, 15, 10);
             dirLight.castShadow = true;
             scene.add(dirLight);
 
-            const backLight = new THREE.DirectionalLight(0xffffff, 0.4);
-            backLight.position.set(-5, -5, -5);
+            const backLight = new THREE.DirectionalLight(0xff003c, 1.5); 
+            backLight.position.set(-10, -10, -10);
             scene.add(backLight);
 
-            // --- بناء المخمد ---
+            const pointLight = new THREE.PointLight(0x00ff88, 1, 20);
+            pointLight.position.set(0, 5, 0);
+            scene.add(pointLight);
+
             const damperGroup = new THREE.Group();
 
-            // 1. الأسطوانة الخارجية (شفافة)
-            const cylinderGeo = new THREE.CylinderGeometry(1.2, 1.2, 6, 32);
+            // --- 1. الأسطوانة الخارجية (زجاجية مع أطراف معدنية) ---
+            const cylinderGeo = new THREE.CylinderGeometry(1.3, 1.3, 6, 32);
             const cylinderMat = new THREE.MeshPhysicalMaterial({
                 color: 0x88ccff,
                 transparent: true,
-                opacity: 0.3,
-                roughness: 0.1,
+                opacity: 0.15,
+                roughness: 0.05,
                 metalness: 0.1,
-                clearcoat: 1.0
+                clearcoat: 1.0,
+                transmission: 0.9
             });
             const cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
             cylinder.rotation.z = Math.PI / 2;
             damperGroup.add(cylinder);
 
-            // 2. السائل الداخلي (زيت السيليكون)
-            const fluidGeo = new THREE.CylinderGeometry(1.0, 1.0, 5.8, 32);
-            const fluidMat = new THREE.MeshPhysicalMaterial({
-                color: 0xcc0000,
+            // أطراف الأسطوانة المعدنية
+            const capGeo = new THREE.CylinderGeometry(1.4, 1.4, 0.3, 32);
+            const capMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 1.0, roughness: 0.2 });
+            
+            const capLeft = new THREE.Mesh(capGeo, capMat);
+            capLeft.rotation.z = Math.PI / 2;
+            capLeft.position.x = -3;
+            damperGroup.add(capLeft);
+
+            const capRight = new THREE.Mesh(capGeo, capMat);
+            capRight.rotation.z = Math.PI / 2;
+            capRight.position.x = 3;
+            damperGroup.add(capRight);
+
+            // --- 2. السائل الداخلي (زيت السيليكون) ---
+            const fluidGeo = new THREE.CylinderGeometry(1.1, 1.1, 5.8, 32);
+            const fluidMat = new THREE.MeshStandardMaterial({
+                color: 0xff003c,
                 transparent: true,
                 opacity: 0.6,
-                roughness: 0.2,
-                metalness: 0.0
+                emissive: 0x550000,
+                roughness: 0.2
             });
             const fluid = new THREE.Mesh(fluidGeo, fluidMat);
             fluid.rotation.z = Math.PI / 2;
             damperGroup.add(fluid);
 
-            // 3. المكبس (HDPE)
-            const pistonGeo = new THREE.CylinderGeometry(0.95, 0.95, 0.8, 32);
-            const pistonMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.7 });
+            // --- 3. المكبس المعقد (HDPE مع حلقات O-ring وفتحات) ---
+            const pistonGroup = new THREE.Group();
+            
+            // جسم المكبس
+            const pistonGeo = new THREE.CylinderGeometry(1.0, 1.0, 1.2, 32);
+            const pistonMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.8, metalness: 0.5 });
             const piston = new THREE.Mesh(pistonGeo, pistonMat);
             piston.rotation.z = Math.PI / 2;
-            piston.position.x = 0; // في المنتصف
-            damperGroup.add(piston);
+            pistonGroup.add(piston);
 
-            // 4. القضيب (Aluminum Rod)
-            const rodGeo = new THREE.CylinderGeometry(0.25, 0.25, 8, 16);
-            const rodMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.9, roughness: 0.2 });
+            // حلقات O-ring (مطاطية)
+            const oringGeo = new THREE.TorusGeometry(1.02, 0.08, 16, 32);
+            const oringMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 });
+            
+            const oring1 = new THREE.Mesh(oringGeo, oringMat);
+            oring1.rotation.y = Math.PI / 2;
+            oring1.position.x = -0.4;
+            pistonGroup.add(oring1);
+
+            const oring2 = new THREE.Mesh(oringGeo, oringMat);
+            oring2.rotation.y = Math.PI / 2;
+            oring2.position.x = 0.4;
+            pistonGroup.add(oring2);
+
+            // فتحات المكبس (Orifices) - 4 ثقوب صغيرة
+            const holeGeo = new THREE.CylinderGeometry(0.08, 0.08, 1.3, 8);
+            const holeMat = new THREE.MeshStandardMaterial({ color: 0x000000 });
+            
+            const holePositions = [
+                { y: 0.5, z: 0.5 }, { y: -0.5, z: 0.5 },
+                { y: 0.5, z: -0.5 }, { y: -0.5, z: -0.5 }
+            ];
+
+            holePositions.forEach(pos => {
+                const hole = new THREE.Mesh(holeGeo, holeMat);
+                hole.rotation.z = Math.PI / 2;
+                hole.position.set(0, pos.y, pos.z);
+                pistonGroup.add(hole);
+            });
+
+            damperGroup.add(pistonGroup);
+
+            // --- 4. القضيب المتدرج (Aluminum Rod) ---
+            const rodGeo = new THREE.CylinderGeometry(0.3, 0.3, 10, 16);
+            const rodMat = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1.0, roughness: 0.1 });
             const rod = new THREE.Mesh(rodGeo, rodMat);
             rod.rotation.z = Math.PI / 2;
-            rod.position.x = 2; // يمتد للخارج
+            rod.position.x = 2.5;
             damperGroup.add(rod);
 
-            // 5. المفاصل (Clevises)
-            const clevisGeo = new THREE.BoxGeometry(0.8, 1.5, 1.5);
-            const clevisMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
+            // --- 5. المفاصل المعقدة (Clevises with Bolts) ---
+            const clevisGeo = new THREE.BoxGeometry(1.0, 1.8, 1.8);
+            const clevisMat = new THREE.MeshStandardMaterial({ color: 0x00f3ff, roughness: 0.3, emissive: 0x003344 });
             
             const clevisLeft = new THREE.Mesh(clevisGeo, clevisMat);
-            clevisLeft.position.set(-3.5, 0, 0);
+            clevisLeft.position.set(-4, 0, 0);
             damperGroup.add(clevisLeft);
 
             const clevisRight = new THREE.Mesh(clevisGeo, clevisMat);
-            clevisRight.position.set(3.5, 0, 0);
+            clevisRight.position.set(4.5, 0, 0);
             damperGroup.add(clevisRight);
 
-            // إضافة المجموعة للمشهد
+            // مسامير (Bolts) في المفاصل
+            const boltGeo = new THREE.CylinderGeometry(0.15, 0.15, 2.0, 8);
+            const boltMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 1.0 });
+            
+            const bolt1 = new THREE.Mesh(boltGeo, boltMat);
+            bolt1.rotation.x = Math.PI / 2;
+            bolt1.position.set(-4, 0, 0);
+            damperGroup.add(bolt1);
+
+            const bolt2 = new THREE.Mesh(boltGeo, boltMat);
+            bolt2.rotation.x = Math.PI / 2;
+            bolt2.position.set(4.5, 0, 0);
+            damperGroup.add(bolt2);
+
             scene.add(damperGroup);
 
             // --- تحريك المشهد ---
@@ -404,35 +552,31 @@
                 if (isDragging) {
                     const deltaX = e.offsetX - previousMousePosition.x;
                     const deltaY = e.offsetY - previousMousePosition.y;
-                    
                     damperGroup.rotation.y += deltaX * 0.01;
                     damperGroup.rotation.x += deltaY * 0.01;
-                    
                     previousMousePosition = { x: e.offsetX, y: e.offsetY };
                 }
             });
 
-            renderer.domElement.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
+            renderer.domElement.addEventListener('mouseup', () => { isDragging = false; });
+            renderer.domElement.addEventListener('mouseleave', () => { isDragging = false; });
 
             renderer.domElement.addEventListener('wheel', (e) => {
                 camera.position.z += e.deltaY * 0.01;
-                if(camera.position.z < 5) camera.position.z = 5;
-                if(camera.position.z > 30) camera.position.z = 30;
+                if(camera.position.z < 8) camera.position.z = 8;
+                if(camera.position.z > 40) camera.position.z = 40;
             });
 
-            // حلقة الرسم
             function animate() {
                 requestAnimationFrame(animate);
                 if(!isDragging) {
-                    damperGroup.rotation.y += 0.005; // دوران تلقائي بطيء
+                    damperGroup.rotation.y += 0.005;
+                    damperGroup.rotation.x = Math.sin(Date.now() * 0.001) * 0.1; // حركة تمايل خفيفة
                 }
                 renderer.render(scene, camera);
             }
             animate();
 
-            // التعامل مع تغيير حجم النافذة
             window.addEventListener('resize', () => {
                 const newWidth = container.clientWidth;
                 const newHeight = container.clientHeight;
@@ -443,7 +587,7 @@
         }
 
         // ==========================================
-        // 2. إعداد مجسم المبنى (Building 3D Model)
+        // 2. إعداد مجسم المبنى المعقد (Complex Building 3D Model)
         // ==========================================
         function initBuildingModel() {
             const container = document.getElementById('buildingCanvasContainer');
@@ -451,41 +595,72 @@
             const height = container.clientHeight;
 
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xeef2f5);
+            scene.background = new THREE.Color(0x03060f); 
 
             const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            camera.position.set(15, 15, 25);
-            camera.lookAt(0, 5, 0);
+            camera.position.set(20, 20, 30);
+            camera.lookAt(0, 6, 0);
 
             const renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(width, height);
+            renderer.shadowMap.enabled = true;
             container.appendChild(renderer.domElement);
 
-            // الإضاءة
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            // إضاءة
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
             scene.add(ambientLight);
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            dirLight.position.set(10, 20, 10);
+            
+            const dirLight = new THREE.DirectionalLight(0x00f3ff, 1.2);
+            dirLight.position.set(15, 30, 15);
+            dirLight.castShadow = true;
             scene.add(dirLight);
 
-            // --- بناء المبنى ---
+            const pointLight1 = new THREE.PointLight(0xff003c, 1.5, 40);
+            pointLight1.position.set(0, 4, 0);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0x00ff88, 1.0, 30);
+            pointLight2.position.set(0, 10, 0);
+            scene.add(pointLight2);
+
             const buildingGroup = new THREE.Group();
 
-            // إعدادات المبنى
-            const floors = 5;
-            const floorHeight = 2;
-            const widthX = 4;
-            const depthZ = 4;
+            // إعدادات المبنى المعقد
+            const floors = 6;
+            const floorHeight = 2.5;
+            const widthX = 5;
+            const depthZ = 5;
 
             // مواد البناء
-            const beamMat = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.8 }); // خشب
-            const damperMat = new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0x550000 }); // أحمر للمخمدات
+            const beamMat = new THREE.MeshStandardMaterial({ color: 0x1a2b4c, roughness: 0.4, metalness: 0.8 }); 
+            const slabMat = new THREE.MeshPhysicalMaterial({ 
+                color: 0x00f3ff, 
+                transparent: true, 
+                opacity: 0.1, 
+                roughness: 0.1,
+                transmission: 0.9,
+                side: THREE.DoubleSide
+            });
+            const damperMat = new THREE.MeshStandardMaterial({ 
+                color: 0xff003c, 
+                emissive: 0xff003c, 
+                emissiveIntensity: 1.0 
+            });
+            const baseMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.9 });
+
+            // 1. القاعدة الخرسانية
+            const baseGeo = new THREE.BoxGeometry(widthX + 2, 0.5, depthZ + 2);
+            const base = new THREE.Mesh(baseGeo, baseMat);
+            base.position.y = -0.25;
+            base.receiveShadow = true;
+            buildingGroup.add(base);
 
             // دالة لإنشاء عمود
             function createColumn(x, z, y) {
                 const geo = new THREE.CylinderGeometry(0.2, 0.2, floorHeight, 8);
                 const mesh = new THREE.Mesh(geo, beamMat);
                 mesh.position.set(x, y + floorHeight/2, z);
+                mesh.castShadow = true;
                 return mesh;
             }
 
@@ -494,23 +669,39 @@
                 const length = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2-z1, 2));
                 const geo = new THREE.BoxGeometry(length, 0.2, 0.2);
                 const mesh = new THREE.Mesh(geo, beamMat);
-                
-                // تحديد الموضع والزاوية
                 const midX = (x1 + x2) / 2;
                 const midZ = (z1 + z2) / 2;
                 mesh.position.set(midX, y, midZ);
-                
-                // تدوير العارضة
                 const angle = Math.atan2(z2 - z1, x2 - x1);
                 mesh.rotation.y = -angle;
+                mesh.castShadow = true;
+                return mesh;
+            }
+
+            // دالة لإنشاء دعامة قطرية (Cross-bracing)
+            function createBrace(x1, z1, y1, x2, z2, y2) {
+                const length = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2-z1, 2) + Math.pow(y2-y1, 2));
+                const geo = new THREE.CylinderGeometry(0.08, 0.08, length, 6);
+                const mesh = new THREE.Mesh(geo, beamMat);
                 
+                const midX = (x1 + x2) / 2;
+                const midY = (y1 + y2) / 2;
+                const midZ = (z1 + z2) / 2;
+                mesh.position.set(midX, midY, midZ);
+                
+                const start = new THREE.Vector3(x1, y1, z1);
+                const end = new THREE.Vector3(x2, y2, z2);
+                const direction = new THREE.Vector3().subVectors(end, start).normalize();
+                const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
+                mesh.quaternion.copy(quaternion);
+                mesh.castShadow = true;
                 return mesh;
             }
 
             // دالة لإنشاء مخمد (قطري)
             function createDamper(x1, z1, y1, x2, z2, y2) {
                 const length = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(z2-z1, 2) + Math.pow(y2-y1, 2));
-                const geo = new THREE.CylinderGeometry(0.15, 0.15, length, 8);
+                const geo = new THREE.CylinderGeometry(0.12, 0.12, length, 8);
                 const mesh = new THREE.Mesh(geo, damperMat);
                 
                 const midX = (x1 + x2) / 2;
@@ -518,21 +709,18 @@
                 const midZ = (z1 + z2) / 2;
                 mesh.position.set(midX, midY, midZ);
                 
-                // توجيه المخمد (نستخدم Quaternion لتدوير الأسطوانة لتتوافق مع الاتجاه)
                 const start = new THREE.Vector3(x1, y1, z1);
                 const end = new THREE.Vector3(x2, y2, z2);
                 const direction = new THREE.Vector3().subVectors(end, start).normalize();
-                
-                // الأسطوانة الافتراضية موجهة على المحور Y، لذا نحتاج لتدويرها
                 const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
                 mesh.quaternion.copy(quaternion);
-                
                 return mesh;
             }
 
             // بناء الطوابق
             for (let i = 0; i < floors; i++) {
                 const y = i * floorHeight;
+                const yTop = y + floorHeight;
                 
                 // الأعمدة (4 أركان)
                 buildingGroup.add(createColumn(-widthX/2, -depthZ/2, y));
@@ -541,22 +729,43 @@
                 buildingGroup.add(createColumn(widthX/2, depthZ/2, y));
 
                 // العوارض الأفقية (محيط الطابق)
-                const yTop = y + floorHeight;
                 buildingGroup.add(createBeam(-widthX/2, -depthZ/2, widthX/2, -depthZ/2, yTop));
                 buildingGroup.add(createBeam(widthX/2, -depthZ/2, widthX/2, depthZ/2, yTop));
                 buildingGroup.add(createBeam(widthX/2, depthZ/2, -widthX/2, depthZ/2, yTop));
                 buildingGroup.add(createBeam(-widthX/2, depthZ/2, -widthX/2, -depthZ/2, yTop));
 
-                // إضافة المخمدات (في الطوابق السفلية والوسطى - الطوابق 0, 1, 2)
-                if (i < 3) {
-                    // مخمدات على الواجهة الأمامية (Z = -depthZ/2)
+                // إضافة بلاطة أرضية شبه شفافة
+                const slabGeo = new THREE.BoxGeometry(widthX, 0.1, depthZ);
+                const slab = new THREE.Mesh(slabGeo, slabMat);
+                slab.position.set(0, yTop, 0);
+                buildingGroup.add(slab);
+
+                // إضافة دعامات قطرية (Cross-bracing) لزيادة التعقيد
+                // في الاتجاه X
+                buildingGroup.add(createBrace(-widthX/2, -depthZ/2, y, widthX/2, -depthZ/2, yTop));
+                buildingGroup.add(createBrace(widthX/2, -depthZ/2, y, -widthX/2, -depthZ/2, yTop));
+                buildingGroup.add(createBrace(-widthX/2, depthZ/2, y, widthX/2, depthZ/2, yTop));
+                buildingGroup.add(createBrace(widthX/2, depthZ/2, y, -widthX/2, depthZ/2, yTop));
+                
+                // في الاتجاه Z
+                buildingGroup.add(createBrace(-widthX/2, -depthZ/2, y, -widthX/2, depthZ/2, yTop));
+                buildingGroup.add(createBrace(-widthX/2, depthZ/2, y, -widthX/2, -depthZ/2, yTop));
+                buildingGroup.add(createBrace(widthX/2, -depthZ/2, y, widthX/2, depthZ/2, yTop));
+                buildingGroup.add(createBrace(widthX/2, depthZ/2, y, widthX/2, -depthZ/2, yTop));
+
+                // إضافة المخمدات (في الطوابق السفلية والوسطى - الطوابق 0, 1, 2, 3)
+                if (i < 4) {
+                    // مخمدات على الواجهة الأمامية والخلفية (بشكل X)
                     buildingGroup.add(createDamper(-widthX/2, -depthZ/2, y, widthX/2, -depthZ/2, yTop));
-                    // مخمدات على الواجهة الخلفية (Z = depthZ/2)
+                    buildingGroup.add(createDamper(widthX/2, -depthZ/2, y, -widthX/2, -depthZ/2, yTop));
                     buildingGroup.add(createDamper(-widthX/2, depthZ/2, y, widthX/2, depthZ/2, yTop));
-                    // مخمدات على الجانب الأيسر (X = -widthX/2)
+                    buildingGroup.add(createDamper(widthX/2, depthZ/2, y, -widthX/2, depthZ/2, yTop));
+                    
+                    // مخمدات على الجانبين (بشكل X)
                     buildingGroup.add(createDamper(-widthX/2, -depthZ/2, y, -widthX/2, depthZ/2, yTop));
-                    // مخمدات على الجانب الأيمن (X = widthX/2)
+                    buildingGroup.add(createDamper(-widthX/2, depthZ/2, y, -widthX/2, -depthZ/2, yTop));
                     buildingGroup.add(createDamper(widthX/2, -depthZ/2, y, widthX/2, depthZ/2, yTop));
+                    buildingGroup.add(createDamper(widthX/2, depthZ/2, y, widthX/2, -depthZ/2, yTop));
                 }
             }
 
@@ -575,40 +784,38 @@
                 if (isDragging) {
                     const deltaX = e.offsetX - previousMousePosition.x;
                     const deltaY = e.offsetY - previousMousePosition.y;
-                    
                     buildingGroup.rotation.y += deltaX * 0.01;
-                    // تقييد دوران المحور X
                     buildingGroup.rotation.x += deltaY * 0.01;
-                    if(buildingGroup.rotation.x > 0.5) buildingGroup.rotation.x = 0.5;
-                    if(buildingGroup.rotation.x < -0.5) buildingGroup.rotation.x = -0.5;
-                    
+                    if(buildingGroup.rotation.x > 0.6) buildingGroup.rotation.x = 0.6;
+                    if(buildingGroup.rotation.x < -0.6) buildingGroup.rotation.x = -0.6;
                     previousMousePosition = { x: e.offsetX, y: e.offsetY };
                 }
             });
 
-            renderer.domElement.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
+            renderer.domElement.addEventListener('mouseup', () => { isDragging = false; });
+            renderer.domElement.addEventListener('mouseleave', () => { isDragging = false; });
 
             renderer.domElement.addEventListener('wheel', (e) => {
-                camera.position.y += e.deltaY * 0.02;
-                camera.position.z += e.deltaY * 0.02;
-                if(camera.position.z < 10) camera.position.z = 10;
-                if(camera.position.z > 50) camera.position.z = 50;
-                camera.lookAt(0, 5, 0);
+                camera.position.y += e.deltaY * 0.03;
+                camera.position.z += e.deltaY * 0.03;
+                if(camera.position.z < 15) camera.position.z = 15;
+                if(camera.position.z > 70) camera.position.z = 70;
+                camera.lookAt(0, 6, 0);
             });
 
-            // حلقة الرسم
             function animate() {
                 requestAnimationFrame(animate);
                 if(!isDragging) {
-                    buildingGroup.rotation.y += 0.002; // دوران تلقائي بطيء
+                    buildingGroup.rotation.y += 0.002;
                 }
+                // تأثير نبض للمخمدات
+                const time = Date.now() * 0.002;
+                damperMat.emissiveIntensity = 0.5 + Math.sin(time) * 0.5;
+                
                 renderer.render(scene, camera);
             }
             animate();
 
-            // التعامل مع تغيير حجم النافذة
             window.addEventListener('resize', () => {
                 const newWidth = container.clientWidth;
                 const newHeight = container.clientHeight;
@@ -618,7 +825,6 @@
             });
         }
 
-        // تشغيل الدوال بعد تحميل الصفحة
         window.onload = function() {
             initDamperModel();
             initBuildingModel();
